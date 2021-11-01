@@ -25,7 +25,11 @@ public class User implements UserDetails {
     private String email;
 
     @Column
-    String modified;
+    private String modified;
+
+    @Column
+    private String created;
+
 
     @Column
     private String password;
@@ -49,6 +53,14 @@ public class User implements UserDetails {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
     }
 
     public Long getId() {

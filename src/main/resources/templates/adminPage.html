@@ -74,12 +74,16 @@
 
         <table>
             <tr>
+                <th>User</th>
                 <th>User_id</th>
                 <th>Role_id</th>
+                <th>Role</th>
             </tr>
             <tr th:each = "ur : ${userRole}">
                 <td th:utext = "${ur[0]}"> </td>
                 <td th:utext = "${ur[1]}"> </td>
+                <td th:utext = "${ur[2]}"> </td>
+                <td th:utext = "${ur[3]}"> </td>
                 <!--
                         <td>
                             <a th:href="@{/editRole11(id=${ur.User_id})}">edit</a>
