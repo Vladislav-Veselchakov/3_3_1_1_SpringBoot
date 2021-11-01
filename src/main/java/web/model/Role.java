@@ -1,5 +1,7 @@
 package web.model;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -7,7 +9,7 @@ import java.util.Objects;
 // Имя роли должно соответствовать шаблону: «ROLE_ИМЯ», например, ROLE_USER.
 @Entity
 @Table(name = "roles")
-public class Role { //implements GrantedAuthority {
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,12 +31,10 @@ public class Role { //implements GrantedAuthority {
         this.id = id;
     }
 
-/** Включить при spring security:
     @Override
     public String getAuthority() {
         return name;
     }
-*/
 
     @Override
     public boolean equals(Object o) {

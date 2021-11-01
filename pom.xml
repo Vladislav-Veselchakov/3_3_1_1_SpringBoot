@@ -22,6 +22,7 @@
     </properties>
 
     <dependencies>
+<!--     ////////////////   for web:  ////////        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -43,6 +44,7 @@
             <optional>true</optional>
         </dependency>
 -->
+<!--        //////////////// for database CRUD ///////////////////////-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -55,6 +57,12 @@
             <version>${mysql.connector}</version>
         </dependency>
 
+<!--        ////////////////// for security //////////////////////-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring.boot}</version>
+        </dependency>
 
     </dependencies>
 
