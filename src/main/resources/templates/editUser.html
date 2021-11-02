@@ -2,35 +2,80 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ru-RU">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+    <link th:href="@{/static/main.css}" rel="stylesheet" />
     <title>Edit user</title>
 </head>
 <body>
 
-<form action="#" th:action="@{/admin/editUser}" method="post" th:object="${user}">
 
-    <input type="hidden" name="id" th:field = "*{id}"/> <br/>
+    <form action="#" th:action="@{/admin/editUser}" method="post" th:object="${userWrole}">
+        <div>
+            <div id="editUser">
+                <input type="hidden" name="id" th:field = "*{user.id}"/> <br/>
 
-    <label for="fn">First name: </label>
-    <input type="text" id="fn"  th:field = "*{firstName}"/> <br/>
-    <label for="ln">Last name: </label>
-    <input type="text" id="ln"  th:field = "*{lastName}"/> <br/>
-    <label for="em">E-mail: </label>
-    <input type="text" id="em"  th:field = "*{email}"/> <br/>
-    <label for="pas">Password</label>
-    <input type="text" id="pas"  th:field = "*{password}"   value="password" > </input><br/>
-    <label>Enter a role to save:</label>
-    <input type="text" value="role_01" name="roleName" > </input><br/>
+                <label for="fn">First name: </label>
+                <input type="text" id="fn"  th:field = "*{user.firstName}"/> <br/>
+                <label for="ln">Last name: </label>
+                <input type="text" id="ln"  th:field = "*{user.lastName}"/> <br/>
+                <label for="em">E-mail: </label>
+                <input type="text" id="em"  th:field = "*{user.email}"/> <br/>
+                <label for="pas">Password</label>
+                <input type="text" id="pas"  th:field = "*{user.password}"   value="password" > </input><br/>
+                <label>Enter a role to save:</label>
+                <input type="text" value="role_01" name="roleName" > </input><br/>
 
-    <input type="submit" value="save"/>
-</form>
+            </div>
+
+            <div id="editUser_roles">
+                <br/>
+                <table>
+                    <tr>
+                        <th>id</th>
+                        <th>Role name</th>
+                    </tr>
+                    <tr th:each = "role, stat : *{idRoles}">
+                        <!--                        <td > <input type="text" th:field = "*{roles[__${stat.index}__] role.id}" > </td>-->
+                        <!--                        <td > <input type="text" th:field = "*{roles[__${stat.index}__] role.name}" > </td>-->
+                        <td > <input class="roles" type="checkbox" th:field = "*{idRoles[__${stat.index}__].checked}" > </td>
+                        <td > <input class="roles" type="text" readonly="readonly" th:field = "*{idRoles[__${stat.index}__].id}" > </td>
+                        <td > <input class="roles" type="text" readonly="readonly" th:field = "*{idRoles[__${stat.index}__].name}" > </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+
+        <br/>
+        <input type="submit" value="save"/>
+    </form>
 
 <br>
-<br/>
 <form action="#" th:action="@{/logout}" method="get">
     <input type="submit" value="logout"/>
 </form>
 
-
 </body>
 </html>
+
+<!-- Жасулан прислал как делать:
+ <div class="form-group">
+        <label for="username" class="font-weight-bold">Username</label>
+        <input type="text" name="username" class="form-control" id="username"
+               placeholder="Username" required>
+    </div>
+    <div class="form-group">
+        <label for="password" class="font-weight-bold">Password</label>
+        <input type="text" name="password" class="form-control" id="password"
+               placeholder="Password" required>
+    </div>
+    <div>
+        <label for="role" class=" font-weight-bold">Role</label>
+        <select multiple="multiple" name="roleIds">
+            <option th:each="r : ${selectableRoles}"
+                    th:value="${r.id}"
+                    th:text="${r.role}">
+            </option>
+        </select>
+    </div>
+-->

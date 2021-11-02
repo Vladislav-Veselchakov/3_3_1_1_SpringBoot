@@ -30,6 +30,15 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
+    public List<Role> getRolesByIdList(List<Long> ids) {
+        Long[] roleIds = ids.toArray(new Long[0]);
+        List<Role> lstRole = entityManager.createQuery(
+                "SELECT r FROM Role r WHERE r.id in (:roleIds)", Role.class)
+                .setParameter("roleIds", ids).getResultList();
+        return  lstRole;
+    }
+
+    @Override
     public void deleteRole(Long id) {
         entityManager.remove(entityManager.find(Role.class, id));
         Query qry = entityManager.createNativeQuery("DELETE FROM user_role WHERE Role_id = :id");

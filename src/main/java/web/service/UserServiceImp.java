@@ -55,6 +55,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public void setRoles(User user, Set<Role> roles) {
+        userDao.setRoles(user, roles);
+    }
+
+    @Override
     public void setModified(User user, Date modified) {
         userDao.setModified(user, modified);
     }

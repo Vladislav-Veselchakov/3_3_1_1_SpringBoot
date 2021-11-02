@@ -14,6 +14,7 @@ public interface UserService {
     public void deleteUser(Long id);
     User getUserById(Long id);
     Set<Role> getRoles(Long id);
+    void setRoles(User user, Set<Role> roles);
     void setModified(User user, Date modified);
     void setCreated(User user, Date created);
     void setRoleByName(User user, String roleName);

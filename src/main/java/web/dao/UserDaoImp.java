@@ -70,6 +70,11 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
+    public void setRoles(User user, Set<Role> roles) {
+        user.setRoles(roles);
+    }
+
+    @Override
     public void setRoleByName(User user, String roleName) {
         // User user1 = getUserById(user.getId());
         Set<Role> roles = getRoles(user.getId());

@@ -34,6 +34,11 @@ public class RoleServiceImp implements RoleService {
     }
 
     @Override
+    public List<Role> getRolesByIdList(List<Long> id) {
+        return roleDao.getRolesByIdList(id);
+    }
+
+    @Override
     @Transactional
     public void deleteRole(Long id) {
         roleDao.deleteRole(id);
