@@ -60,6 +60,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public void setCreated(User user, Date created) {
+        userDao.setCreated(user, created);
+    }
+
+    @Override
     public void setRoleByName(User user, String roleName) {
         userDao.setRoleByName(user, roleName);
     }

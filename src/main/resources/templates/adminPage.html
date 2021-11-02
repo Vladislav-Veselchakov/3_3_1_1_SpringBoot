@@ -17,6 +17,7 @@
         <th>Last name</th>
         <th>Email</th>
         <th>Password</th>
+        <th>Created</th>
         <th>Modified</th>
         <th>actions</th>
     </tr>
@@ -26,6 +27,7 @@
         <td th:utext = "${user.lastName}"> </td>
         <td th:utext = "${user.email}"> </td>
         <td th:utext = "${user.password}"> </td>
+        <td th:utext = "${user.created}"> </td>
         <td th:utext = "${user.modified}"> </td>
         <td>
             <a th:href="@{/admin/edit(id=${user.id})}">edit</a>

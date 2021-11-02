@@ -16,5 +16,6 @@ public interface UserDao {
     void update(User user);
     Set<Role> getRoles(Long id);
     void setModified(User user, Date modified);
+    void setCreated(User user, Date created);
     void setRoleByName(User user, String roleName);
 }

@@ -5,6 +5,7 @@ import web.model.Role;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -31,6 +32,9 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public void deleteRole(Long id) {
         entityManager.remove(entityManager.find(Role.class, id));
+        Query qry = entityManager.createNativeQuery("DELETE FROM user_role WHERE Role_id = :id");
+        qry.setParameter("id", id);
+        qry.executeUpdate();
     }
 
     @Override
