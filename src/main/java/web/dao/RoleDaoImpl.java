@@ -11,6 +11,8 @@ import javax.persistence.Query;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public class RoleDaoImpl implements RoleDao {
@@ -34,12 +36,10 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public List<Role> getRolesByIdList(List<Long> ids) {
-        Long[] roleIds = ids.toArray(new Long[0]);
-        List<Role> lstRole = entityManager.createQuery(
-                "SELECT r FROM Role r WHERE r.id in (:roleIds)", Role.class)
-                .setParameter("roleIds", ids).getResultList();
-        return  lstRole;
+    public Set<Role> getRolesByIdList(List<Long> ids) {
+        return entityManager.createQuery("SELECT r FROM Role r WHERE r.id in (:roleIds)", Role.class)
+                .setParameter("roleIds", ids).getResultList()
+                .stream().collect(Collectors.toSet());
     }
 
     @Override

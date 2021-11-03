@@ -48,8 +48,6 @@ public class AdminUserController {
     @GetMapping(value = "/edit")
     String editPage(@RequestParam Long id, ModelMap model) {
         User user = userService.getUserById(id);
-        List<Role> roles = roleService.getRoles();
-        // List<Role> userRoles = userService.getRoles(id).stream().collect(Collectors.toList());
         List<CheckIDRole> checkIDRoles= roleService.getCheckIDRoles(user);
 
         UserWithRole userWrole = new UserWithRole();
@@ -66,8 +64,8 @@ public class AdminUserController {
                 .filter(x-> x.getChecked() == true)
                 .map(x-> x.getId())
                 .collect(Collectors.toList());
-        List<Role> roles2add = roleService.getRolesByIdList(roleIds);
-        userService.setRoles(user, roles2add.stream().collect(Collectors.toSet()));
+        Set<Role> roles2add = roleService.getRolesByIdList(roleIds);
+        userService.setRoles(user, roles2add);
         userService.setModified(user, new GregorianCalendar().getTime());
         userService.update(user);
         return "redirect:/admin";
