@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import web.dao.RoleDao;
 import web.model.Role;
+import web.model.User;
 
 import java.util.List;
 
@@ -36,6 +37,11 @@ public class RoleServiceImp implements RoleService {
     @Override
     public List<Role> getRolesByIdList(List<Long> id) {
         return roleDao.getRolesByIdList(id);
+    }
+
+    @Override
+    public List<CheckIDRole> getCheckIDRoles(User user) {
+        return roleDao.getCheckIDRoles(user);
     }
 
     @Override

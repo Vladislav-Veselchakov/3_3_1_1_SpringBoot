@@ -16,15 +16,8 @@ public class UserWithRole {
         return idRoles;
     }
 
-    public void setIdRoles(List<Role> roles) {
-        idRoles = new ArrayList<>();
-        for(int i = 0; i < roles.size(); i++) {
-            idRoles.add(new CheckIDRole(false, roles.get(i).getId(), roles.get(i).getName()));
-            if (i == 2) {
-                idRoles.get(i).setChecked(true);
-            }
-        }
-
+    public void setIdRoles(List<CheckIDRole> CheckIDRoles) {
+        idRoles = CheckIDRoles;
     }
 
     public User getUser() {

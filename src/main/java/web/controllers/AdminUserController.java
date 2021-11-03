@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -48,20 +49,19 @@ public class AdminUserController {
     String editPage(@RequestParam Long id, ModelMap model) {
         User user = userService.getUserById(id);
         List<Role> roles = roleService.getRoles();
+        // List<Role> userRoles = userService.getRoles(id).stream().collect(Collectors.toList());
+        List<CheckIDRole> checkIDRoles= roleService.getCheckIDRoles(user);
 
         UserWithRole userWrole = new UserWithRole();
         userWrole.setUser(user);
-        userWrole.setIdRoles(roles);
+        userWrole.setIdRoles(checkIDRoles);
         model.addAttribute("userWrole", userWrole);
         return "editUser";
     }
 
     @PostMapping(value = "/editUser")
-    String editUser(@ModelAttribute("userWrole") UserWithRole userWrole,
-//            @ModelAttribute("roleName") String roleName,
-                    ModelMap model) {
+    String editUser(@ModelAttribute("userWrole") UserWithRole userWrole, ModelMap model) {
         User user = userWrole.getUser();
-//        userService.setRoleByName(userWrole.getUser(), roleName); //user, roleName);
         List<Long> roleIds =  userWrole.getIdRoles().stream()
                 .filter(x-> x.getChecked() == true)
                 .map(x-> x.getId())
