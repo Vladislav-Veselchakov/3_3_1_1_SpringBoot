@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru-RU">
+<head>
+    <meta charset="UTF-8">
+<!--    <link th:href="@{/static/main.css}" rel="stylesheet" />-->
+    <title>Edit user</title>
+</head>
+<body>
+
+
+<form action="#" th:action="@{/admin/editUser2}" method="post" th:object="${user}">
+    <div>
+        <div id="editUser">
+            <input type="hidden" id="id" name="id" th:field = "*{id}"/> <br/>
+
+            <label for="fn">First name: </label>
+            <input type="text" id="fn"  th:field = "*{firstName}"/> <br/>
+            <label for="ln">Last name: </label>
+            <input type="text" id="ln"  th:field = "*{lastName}"/> <br/>
+            <label for="em">E-mail: </label>
+            <input type="text" id="em"  th:field = "*{email}"/> <br/>
+            <label for="pas">Password</label>
+            <input type="text" id="pas"  th:field = "*{password}"   value="password" > </input><br/>
+            <label>Enter a role to save:</label>
+            <input type="text" value="role_01" name="roleName" > </input><br/>
+
+        </div>
+
+<!--        <div id="editUser_roles">-->
+<!--            <select multiple="multiple" name="roleIds">-->
+<!--&lt;!&ndash;                <option th:each="r : ${selectableRoles}"&ndash;&gt;-->
+<!--&lt;!&ndash;                        th:value="${r.id}"&ndash;&gt;-->
+<!--&lt;!&ndash;                        th:text="${r.name}">&ndash;&gt;-->
+<!--                </option>-->
+<!--            </select>-->
+
+<!--        </div>-->
+
+
+
+
+    <br/>
+    <input type="submit" value="save" id="bSubmit"/>
+</form>
+
+<br> <input type="button" id="bSubmit1" value="bSubmit1">
+<h3 id="summa"></h3>
+<br>
+<form action="#" th:action="@{/logout}" method="get">
+    <input type="submit" value="logout"/>
+</form>
+
+<script type="text/javascript">
+    let bSubmit = document.getElementById("bSubmit1");
+    // console.log("out of func")
+    bSubmit.onclick = function() {
+        console.log("we're in onclick()")
+        let user={}, roleId={}, roleId2={};
+        user.id = 1111; // document.getElementById("id");
+        user.firstName = "from JS";// document.getElementById("fn");
+        let roleIds = [];
+        roleId.id = 1
+        roleId.checked = true
+        roleId.name = "name from JS"
+        roleId2.id = 2
+        roleId2.checked = false
+        roleId2.name = "name from JS number 2"
+
+        roleIds[0] = roleId;
+        roleIds[1] = roleId2;
+
+        let body = {}
+        body.user = user;
+        body.selectableRoles = roleIds;
+        console.log("before postParams()...")
+        postParams(body)
+        return false;
+    }
+
+    /* Данная функция создаёт кроссбраузерный объект XMLHTTP */
+    function getXmlHttp() {
+        var xmlhttp;
+        try {
+            xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (E) {
+                xmlhttp = false;
+            }
+        }
+        if (!xmlhttp && typeof XMLHttpRequest!='undefined') {
+            xmlhttp = new XMLHttpRequest();
+        }
+        return xmlhttp;
+    }
+    function postParams(pbody) {
+        console.log("we're in summa() func")
+        // var xmlhttp = getXmlHttp(); // Создаём объект XMLHTTP
+        var xmlhttp = new XMLHttpRequest()
+        xmlhttp.open('POST', '/editUser2', true); // Открываем асинхронное соединение
+        //xmlhttp.open('POST', 'file:///C:/Users/VVAntipov/IdeaProjects/3_3_1_1_SpringBoot%20wrap%20class/src/main/resources/templates/editUser2.html#', true); // Открываем асинхронное соединение
+       // xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Отправляем кодировку
+        xmlhttp.setRequestHeader('Content-Type', 'application/json');
+        console.log("we're in postParams(): Before Send()")
+        xmlhttp.send(JSON.stringify(pbody)); // Отправляем POST-запрос
+        console.log("after send")
+        xmlhttp.onreadystatechange = function() { // Ждём ответа от сервера
+            if (xmlhttp.readyState == 4) { // Ответ пришёл
+                if(xmlhttp.status == 200) { // Сервер вернул код 200 (что хорошо)
+                    document.getElementById("summa").innerHTML = xmlhttp.responseText; // Выводим ответ сервера
+                }
+            }
+        };
+    }
+
+    /* /////////////////////////////////////////////////////////////
+
+    var xhr = new XMLHttpRequest();
+xhr.open("POST", yourUrl, true);
+xhr.setRequestHeader('Content-Type', 'application/json');
+xhr.send(JSON.stringify({
+    value: value
+}));
+xhr.send(JSON.stringify({
+    value: value
+}));
+Кстати, дл
+    /////////////////////////////////////////////////////////////////////////////*/
+
+</script>
+
+</body>
+</html>
+
+<!-- Жасулан прислал как делать:
+ <div class="form-group">
+        <label for="username" class="font-weight-bold">Username</label>
+        <input type="text" name="username" class="form-control" id="username"
+               placeholder="Username" required>
+    </div>
+    <div class="form-group">
+        <label for="password" class="font-weight-bold">Password</label>
+        <input type="text" name="password" class="form-control" id="password"
+               placeholder="Password" required>
+    </div>
+    <div>
+        <label for="role" class=" font-weight-bold">Role</label>
+        <select multiple="multiple" name="roleIds">
+            <option th:each="r : ${selectableRoles}"
+                    th:value="${r.id}"
+                    th:text="${r.role}">
+            </option>
+        </select>
+    </div>
+-->

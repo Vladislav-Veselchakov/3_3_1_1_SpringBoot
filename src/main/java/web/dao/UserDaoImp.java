@@ -81,4 +81,9 @@ public class UserDaoImp implements UserDao {
         }
         user.setRoles(roles);
     }
+    @Override
+    public void setRoles(User user, Set<Role> roles) {
+        user.setRoles(roles);
+    }
+
 }

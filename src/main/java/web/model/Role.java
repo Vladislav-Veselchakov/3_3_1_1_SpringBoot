@@ -15,8 +15,15 @@ public class Role implements GrantedAuthority {
     private Long id;
     @Column(length = 20, unique = true)
     private String name;
-
+    @Transient
+    Boolean checked;
     public Role() {
+    }
+
+    public Role(Boolean checked, Long id, String name) {
+        this.id = id;
+        this.name = name;
+        this.checked = checked;
     }
 
     public Role(String name) {
@@ -55,5 +62,13 @@ public class Role implements GrantedAuthority {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
     }
 }

@@ -68,4 +68,9 @@ public class UserServiceImp implements UserService {
     public void setRoleByName(User user, String roleName) {
         userDao.setRoleByName(user, roleName);
     }
+
+    @Override
+    public void setRoles(User user, Set<Role> roles) {
+        userDao.setRoles(user, roles);
+    }
 }
