@@ -3,28 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/static/main.css}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <title>Edit user</title>
 </head>
 <body>
 
 
-    <form action="#" th:action="@{/admin/editUser}" method="post" th:object="${userWrole}">
+    <form>
         <div>
             <div id="editUser">
-                <input type="hidden" name="id" th:field = "*{user.id}"/> <br/>
-
-                <label for="fn">First name: </label>
-                <input type="text" id="fn"  th:field = "*{user.firstName}"/> <br/>
-                <label for="ln">Last name: </label>
-                <input type="text" id="ln"  th:field = "*{user.lastName}"/> <br/>
-                <label for="em">E-mail: </label>
-                <input type="text" id="em"  th:field = "*{user.email}"/> <br/>
-                <label for="pas">Password</label>
-                <input type="text" id="pas"  th:field = "*{user.password}"   value="password" > </input><br/>
+                <input type="hidden" name="id" th:field = "${user.id}"/> <br/>
+                <label>First name: </label>
+                <input type="text" id="firstName"  th:field = "${user.firstName}"/> <br/>
+                <label>Last name: </label>
+                <input type="text" id="lastName"  th:field = "${user.lastName}"/> <br/>
+                <label>E-mail: </label>
+                <input type="text" id="email"  th:field = "${user.email}"/> <br/>
+                <label>Password</label>
+                <input type="text" id="password"  th:field = "${user.password}"   value="password" > </input><br/>
 
             </div>
 
             <div id="editUser_roles">
+                <select size="10" multiple name="selectRoles" id="selectTag">
+                    <th:block th:each="role : ${roles}">
+                        <option th:if="${role.checked == true}" selected
+                                th:value="${role.id}"
+                                th:text="${role.name}" name="roleOption">
+                        <option th:unless="${role.checked == true}"
+                                th:value="${role.id}"
+                                th:text="${role.name}" name="roleOption">
+                    </th:block>
+                </select>
+
+<!--
                 <br/>
                 <table>
                     <tr>
@@ -32,28 +44,29 @@
                         <th>Role name</th>
                     </tr>
                     <tr th:each = "role, stat : *{roles}">
-<!--                        <td th:utext="${role.name}"></td>-->
-<!--                        <td th:utext="${role.id}"></td>-->
-<!--                        <td th:utext="${role.checked}"></td>-->
-                        <!--                        <td > <input type="text" th:field = "*{roles[__${stat.index}__] role.id}" > </td>-->
-                        <!--                        <td > <input type="text" th:field = "*{roles[__${stat.index}__] role.name}" > </td>-->
+&lt;!&ndash;                        <td th:utext="${role.name}"></td>&ndash;&gt;
+&lt;!&ndash;                        <td th:utext="${role.id}"></td>&ndash;&gt;
+&lt;!&ndash;                        <td th:utext="${role.checked}"></td>&ndash;&gt;
+                        &lt;!&ndash;                        <td > <input type="text" th:field = "*{roles[__${stat.index}__] role.id}" > </td>&ndash;&gt;
+                        &lt;!&ndash;                        <td > <input type="text" th:field = "*{roles[__${stat.index}__] role.name}" > </td>&ndash;&gt;
                         <td > <input class="roles" type="checkbox" th:field = "*{roles[__${stat.index}__].checked}" > </td>
                         <td > <input class="roles" type="text" readonly="readonly" th:field = "*{roles[__${stat.index}__].id}" > </td>
                         <td > <input class="roles" type="text" readonly="readonly" th:field = "*{roles[__${stat.index}__].name}" > </td>
 
-<!--                        <td > <input class="roles" type="checkbox" th:utext = "${role.checked}" > </td>-->
-<!--                        <td > <input class="roles" type="text" readonly="readonly" th:utext = "${role.id}" > </td>-->
-<!--                        <td > <input class="roles" type="text" readonly="readonly" th:utext = "${role.name}" > </td>-->
+&lt;!&ndash;                        <td > <input class="roles" type="checkbox" th:utext = "${role.checked}" > </td>&ndash;&gt;
+&lt;!&ndash;                        <td > <input class="roles" type="text" readonly="readonly" th:utext = "${role.id}" > </td>&ndash;&gt;
+&lt;!&ndash;                        <td > <input class="roles" type="text" readonly="readonly" th:utext = "${role.name}" > </td>&ndash;&gt;
 
                     </tr>
                 </table>
+-->
             </div>
         </div>
 
 
 
         <br/>
-        <input type="submit" value="save"/>
+        <input type="button" value="save" id="bSave"/>
     </form>
 
 <br>
@@ -61,27 +74,144 @@
     <input type="submit" value="logout"/>
 </form>
 
+
+
+    <script type="text/javascript">
+        let bSave = document.getElementById("bSave");
+        bSave.onclick = function() {
+            console.log("we're in onclick()")
+            ///// рабочая версия с JQuery:
+            //let sjq = $('#selectTag').val();
+            //console.log("sjq")
+            //console.log(sjq)
+
+            let body = {}
+            body.id = document.getElementById("id").value;
+            body.firstName = document.getElementById("firstName").value;
+            body.lastName = document.getElementById("lastName").value;
+            body.email = document.getElementById("email").value;
+            body.password = document.getElementById("password").value;
+            body.roles = []
+
+            let selectedRoles = selectTag.selectedOptions; //работает, но выбирает только первый selected option [...selectTag.options].find(option => option.selected)
+            let selRole = {checked : false, id : 0, name : ""};
+            console.log("before cycle")
+            for(let i = 0; i < selectedRoles.length; i++) {
+                body.roles[i] = {
+                    checked : true,
+                    id : selectedRoles[i].value,
+                    name : selectedRoles[i].text
+                };
+            }
+            console.log("after cycle")
+
+            console.log("body: ")
+            console.log(body)
+            console.log("before postParams()...011")
+            postParams(body)
+            return false;
+        }
+
+        /////////////////////////////// с пом. fetch() //////////////////
+        async function postParams(pbody) {
+            // let user = {
+            //     name: 'John',
+            //     surname: 'Smith'
+            // };
+            console.log("w're IN postParams()...")
+            console.log("stringify(pBody):")
+            console.log(JSON.stringify(pbody))
+            try {
+                console.log("before fetch()")
+                let response = await fetch("/admin/editUser2", {
+                    credentials: 'include',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(pbody) // body: JSON.stringify(user)
+                });
+                console.log("after fetch()")
+            } catch (ex) {
+                console.log(ex.message)
+            }
+            // if (response.ok) { // если HTTP-статус в диапазоне 200-299 получаем тело ответа
+            //     console.log("berfore response()")
+            //     let result = await response.json();
+            //     console.log("after response.json()")
+            // } else {
+            //     alert("Ошибка HTTP: " + response.status);
+            // }
+            console.log(result.message)
+        } /////////////// c пом fetch() ///////////////
+
+   /* ///////// Данная функция создаёт кроссбраузерный объект XMLHTTP ///////////
+
+              function getXmlHttp() {
+                  var xmlhttp;
+                  try {
+                      xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+                  } catch (e) {
+                      try {
+                          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                      } catch (E) {
+                          xmlhttp = false;
+                      }
+                  }
+                  if (!xmlhttp && typeof XMLHttpRequest != 'undefined') {
+                      xmlhttp = new XMLHttpRequest();
+                  }
+                  return xmlhttp;
+              }
+
+              function postParams(pbody) {
+                  console.log("we're in summa() func")
+                  // var xmlhttp = getXmlHttp(); // Создаём объект XMLHTTP
+                  var xmlhttp = new XMLHttpRequest()
+                  xmlhttp.open('POST', '/admin/editUser2', true); // Открываем асинхронное соединение
+                  //xmlhttp.open('POST', 'file:///C:/Users/VVAntipov/IdeaProjects/3_3_1_1_SpringBoot%20wrap%20class/src/main/resources/templates/editUser2.html#', true); // Открываем асинхронное соединение
+                  // xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Отправляем кодировку
+                  xmlhttp.setRequestHeader('Content-Type', 'application/json');
+                  console.log("we're in postParams(): Before Send()")
+                  xmlhttp.send(JSON.stringify(pbody)); // Отправляем POST-запрос
+                  console.log("after send")
+                  xmlhttp.onreadystatechange = function () { // Ждём ответа от сервера
+                      if (xmlhttp.readyState == 4) { // Ответ пришёл
+                          if (xmlhttp.status == 200) { // Сервер вернул код 200 (что хорошо)
+                              document.getElementById("summa").innerHTML = xmlhttp.responseText; // Выводим ответ сервера
+                          }
+                      }
+                  };
+              }
+      */
+
+        /* /////////////////////////////////////////////////////////////
+
+        var xhr = new XMLHttpRequest();
+    xhr.open("POST", yourUrl, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        value: value
+    }));
+    xhr.send(JSON.stringify({
+        value: value
+    }));
+    Кстати, дл
+        /////////////////////////////////////////////////////////////////////////////*/
+
+        /*  ///// Жасулан как получить выбранные опции jquery
+        let roles = [];
+            let i = 0;
+            $(form + " option:selected").each(function () {
+                roles[i] = new Role(this.value, this.text);
+                i++;
+            });
+        */
+
+    </script>
+
+
+
 </body>
 </html>
 
-<!-- Жасулан прислал как делать:
- <div class="form-group">
-        <label for="username" class="font-weight-bold">Username</label>
-        <input type="text" name="username" class="form-control" id="username"
-               placeholder="Username" required>
-    </div>
-    <div class="form-group">
-        <label for="password" class="font-weight-bold">Password</label>
-        <input type="text" name="password" class="form-control" id="password"
-               placeholder="Password" required>
-    </div>
-    <div>
-        <label for="role" class=" font-weight-bold">Role</label>
-        <select multiple="multiple" name="roleIds">
-            <option th:each="r : ${selectableRoles}"
-                    th:value="${r.id}"
-                    th:text="${r.role}">
-            </option>
-        </select>
-    </div>
--->
