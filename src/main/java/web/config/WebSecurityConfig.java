@@ -63,16 +63,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").access("hasAnyRole('ADMIN')") // VL:   .anyRequest().authenticated()
                 .antMatchers("/user/**").hasAnyRole("USER")
                 .antMatchers("/", "/static/main.css").permitAll()
-        //////
-        ////////// разораться как из javaScript слать csrf(), а не отключать
-        ///////// как сейчас:
+
+        ////////// разораться как из javaScript слать csrf(), а не отключать как сейчас:
                 .and() //  VL: this is for PostMan request
                 .csrf().disable();
-
-//        http.authorizeRequests()
-//                .antMatchers("/").anonymous();
-
-
     }
 
     @Bean

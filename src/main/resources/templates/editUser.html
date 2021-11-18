@@ -36,7 +36,7 @@
                     </th:block>
                 </select>
 
-<!--
+<!-- VL пример с таблицей и флажками (нужен класс-обертка)
                 <br/>
                 <table>
                     <tr>
@@ -63,13 +63,12 @@
             </div>
         </div>
 
-
-
         <br/>
         <input type="button" value="save" id="bSave"/>
     </form>
 
-<br>
+<br/>
+    <a th:href="@{/admin}">Go to admin</a> <br/>
 <form action="#" th:action="@{/logout}" method="get">
     <input type="submit" value="logout"/>
 </form>
@@ -109,10 +108,31 @@
             console.log(body)
             console.log("before postParams()...011")
             postParams(body)
-            return false;
+
+            //redirect #1:
+            //window.location.href = '/admin';
+
+            // redirect by jquery:
+            //$(location).attr('href','/admin');
+
+            //При изменении свойств location также происходит перезагрузка страниц,
+            // но в этом случае записи об их посещении в history пропадают.
+            // location="http://ya.ru"
+
+            // Метод replace() позволяет заменить одну страницу другой таким образом, что это замещение не будет отражено в истории
+            // HTML-страниц (history) браузера, и при нажатии на кнопку Back, из панели инструментов, пользователь всегда будет попадать на
+            // первую загруженную обычным способом страницу.
+            window.location.replace('http://localhost:8080/admin');
+
+            // Редирект для устройств Apple и Android
+            // if ((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPad/i) || (navigator.userAgent.match(/Android/i))) {
+            //     document.location = "page-optimized-for-mobile.html";
+            // }
+            // return false;
         }
 
-        /////////////////////////////// с пом. fetch() //////////////////
+
+/*        /////////////////////////////// с пом. fetch() //////////////////
         async function postParams(pbody) {
             // let user = {
             //     name: 'John',
@@ -123,7 +143,7 @@
             console.log(JSON.stringify(pbody))
             try {
                 console.log("before fetch()")
-                let response = await fetch("/admin/editUser2", {
+                let response = await fetch("/admin/editUser", {
                     credentials: 'include',
                     method: 'POST',
                     headers: {
@@ -135,17 +155,18 @@
             } catch (ex) {
                 console.log(ex.message)
             }
-            // if (response.ok) { // если HTTP-статус в диапазоне 200-299 получаем тело ответа
-            //     console.log("berfore response()")
-            //     let result = await response.json();
-            //     console.log("after response.json()")
-            // } else {
-            //     alert("Ошибка HTTP: " + response.status);
-            // }
-            console.log(result.message)
+            if (response.ok) { // если HTTP-статус в диапазоне 200-299 получаем тело ответа
+                console.log("berfore response()")
+                let result = await response.json();
+                console.log("after response.json()")
+            } else {
+                alert("Ошибка HTTP: " + response.status);
+            }
+            // console.log(result.message)
         } /////////////// c пом fetch() ///////////////
+*/
 
-   /* ///////// Данная функция создаёт кроссбраузерный объект XMLHTTP ///////////
+/* ///////// Данная функция создаёт кроссбраузерный объект XMLHTTP ///////////
 
               function getXmlHttp() {
                   var xmlhttp;
@@ -163,27 +184,29 @@
                   }
                   return xmlhttp;
               }
+*/
 
-              function postParams(pbody) {
-                  console.log("we're in summa() func")
-                  // var xmlhttp = getXmlHttp(); // Создаём объект XMLHTTP
-                  var xmlhttp = new XMLHttpRequest()
-                  xmlhttp.open('POST', '/admin/editUser2', true); // Открываем асинхронное соединение
-                  //xmlhttp.open('POST', 'file:///C:/Users/VVAntipov/IdeaProjects/3_3_1_1_SpringBoot%20wrap%20class/src/main/resources/templates/editUser2.html#', true); // Открываем асинхронное соединение
-                  // xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Отправляем кодировку
-                  xmlhttp.setRequestHeader('Content-Type', 'application/json');
-                  console.log("we're in postParams(): Before Send()")
-                  xmlhttp.send(JSON.stringify(pbody)); // Отправляем POST-запрос
-                  console.log("after send")
-                  xmlhttp.onreadystatechange = function () { // Ждём ответа от сервера
-                      if (xmlhttp.readyState == 4) { // Ответ пришёл
-                          if (xmlhttp.status == 200) { // Сервер вернул код 200 (что хорошо)
-                              document.getElementById("summa").innerHTML = xmlhttp.responseText; // Выводим ответ сервера
-                          }
-                      }
-                  };
+
+//////////// POST с пом. new XMLHttpRequest() //////////
+      function postParams(pbody) {
+          console.log("we're in postParams()")
+          // var xmlhttp = getXmlHttp(); // Создаём объект XMLHTTP см. функ. в комментах
+          var xmlhttp = new XMLHttpRequest()
+          xmlhttp.open('POST', '/admin/editUser', false); // Открываем синхронное соединение (для асинхр - пиши true)
+          //xmlhttp.open('POST', 'file:///C:/Users/VVAntipov/IdeaProjects/3_3_1_1_SpringBoot%20wrap%20class/src/main/resources/templates/editUser.html#', true); // Открываем асинхронное соединение
+          // xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Отправляем кодировку
+          xmlhttp.setRequestHeader('Content-Type', 'application/json');
+          console.log("Before Send()")
+          xmlhttp.send(JSON.stringify(pbody)); // Отправляем POST-запрос
+          console.log("after send()")
+          xmlhttp.onreadystatechange = function () { // Ждём ответа от сервера
+              if (xmlhttp.readyState == 4) { // Ответ пришёл
+                  if (xmlhttp.status == 200) { // Сервер вернул код 200 (что хорошо)
+                      document.getElementById("summa").innerHTML = xmlhttp.responseText; // Выводим ответ сервера
+                  }
               }
-      */
+          };
+      }
 
         /* /////////////////////////////////////////////////////////////
 

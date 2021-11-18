@@ -49,18 +49,10 @@ public class AdminUserController {
         return "editUser";
     }
 
-    @PostMapping(value = "/editUser")
-    String editUser(//@ModelAttribute("userWrole") UserWithRole userWrole,
-                    ModelMap model) {
-//        User user = userWrole.getUser();
-//        List<Long> roleIds =  userWrole.getRoles().stream()
-//                .filter(x-> x.getChecked() == true)
-//                .map(x-> x.getId())
-//                .collect(Collectors.toList());
-//        Set<Role> roles2add = roleService.getRolesByIdList(roleIds);
-//        userService.setRoles(user, roles2add);
-//        userService.setModified(user, new GregorianCalendar().getTime());
-//        userService.update(user);
+    @PostMapping(value = "/editUser") // см. задачу 3-3-1-2 для возврата json и правильного статус-кода
+    String editUser(@RequestBody User user, ModelMap model) {
+        userService.setModified(user, new GregorianCalendar().getTime());
+        userService.update(user);
         return "redirect:/admin";
     }
 
@@ -71,30 +63,4 @@ public class AdminUserController {
         attr.addFlashAttribute("result001", "User deleted at " + df.format((new GregorianCalendar()).getTime()));
         return "redirect:/admin";
     }
-
-    /////////////////// пробуем SELECTION тэг для  заполнения полями //////////////////
-    @GetMapping(value = "/edit2")
-    String editPage2(@RequestParam Long id, ModelMap model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-
-        List<Role> roles = roleService.getRoles();
-        model.addAttribute("selectableRoles", roles);
-
-        return "editUser2";
-    }
-
-    @PostMapping(value = "/editUser2")
-    String editUser2(@RequestBody User user,
-                    ModelMap model) {
-//        userService.setRoleByName(user, roleName); //user, roleName);
-        int aaa = 111;
-        userService.update(user);
-        return "redirect:/admin";
-    }
-
-
-    /////////////////// end of пробуем SELECTION тэг для  заполнения полями //////////////////
-
-
 }
