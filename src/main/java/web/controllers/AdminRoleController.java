@@ -2,10 +2,13 @@ package web.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import web.model.Role;
-import web.model.User;
 import web.service.RoleService;
 
 import java.text.DateFormat;
@@ -40,6 +43,26 @@ public class AdminRoleController {
         attr.addFlashAttribute("result002", "Role deleted at " + df.format((new GregorianCalendar()).getTime()));
         return "redirect:/admin";
     }
+
+//    как ловим атрибут от метода addFlashAttribute
+//@GetMapping(value = "/")
+//public String printWelcome(ModelMap model) {
+//    List<String> messages = new ArrayList<>();
+//    messages.add("Hello!");
+//    messages.add("I'm Spring MVC application");
+//    messages.add("5.2.0 version by sep'19 ");
+//    model.addAttribute("messages", messages);
+//
+//    List<User> users = userService.getAllUsers();
+//    model.addAttribute("users", users);
+//    if(!model.containsAttribute("result"))
+//        model.addAttribute("result", "at Home");
+//
+//    return "index";
+//}
+
+//    Если используем метод addAtrubute, то просто к пути добавиться параметр: localhost/admin?result=lalala
+
 
     @GetMapping(value = "/editRole")
     public String editRole(@RequestParam long id, RedirectAttributes attr, ModelMap model) {
